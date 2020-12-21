@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
+import React ,{Component}from "react";
+import Nav from './components/Nav';
+import Home from "./components/Home";
+import Login, { MyContext } from "./components/Login";
+import SignUp from './components/Signup';
+import Products from "./components/Products";
+import Services from './components/Services'
+import About from "./components/About"
+import Contact from "./components/Contact"
+import Faqs from './components/Faqs';
+import { BrowserRouter as Router, Switch, Route ,Redirect} from "react-router-dom";
+import ProductTab from "./components/ProductTab";
+import Cart from "./components/pages/cart";
+// import NotFound from "./components/pages/NotFound"
+// import Admin from "./components/Dashboard/layouts/Admin"
+class App extends Component {
+  render(){
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+{/* <MyContext.Provider value={this.props.data}> */}
+  {console.log('hOME PROPS',this.props.data)}
+      <Router>
+              <Nav />
+              <Switch>
+                   <Route path="/cart" component={Cart}></Route>
+                {/* <Route path="*" component={NotFound} /> */}
+                    <Route exact path="/" component={Home} ></Route>
+                    <Route path="/Login" component={Login}></Route>
+                    <Route path="/SignUp" component={SignUp}></Route>
+                    <Route path="/Products" component={ProductTab}></Route>
+                    <Route path="/services" component={Services}></Route>
+                    <Route path="/about" component={About}></Route>
+                    <Route exact path="/contact" component={Contact}></Route>
+                    <Route path="/Faqs" component={Faqs}></Route>
+                {/* <Route path="/admin" component={Admin}></Route>
+                    <Redirect from="/admin" to="/admin/dashboard" /> */}
+              </Switch>
+      </Router>
+{/* </MyContext.Provider> */}
+    </>
   );
-}
+  }
+};
 
 export default App;
