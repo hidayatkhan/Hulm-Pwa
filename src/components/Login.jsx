@@ -1,13 +1,15 @@
-import React, { Component } from "react";
+import React, { Component, useContext, useEffect } from "react";
 import { MDBInput, MDBRow, MDBCol, MDBBtn, MDBContainer } from "mdbreact";
 import Home from "./Home";
 import Keycloak from "keycloak-js";
 import Products from "./Products";
 import Nav from "./Nav";
-export const LoginContext = React.createContext(); // added this
+import LoginContext from "../components/contexts/LoginContext";
+import { history } from "react-dom";
 
-class Login extends Component {
+const Login = (props) => {
   //Login Form
+  const loginContext = useContext(LoginContext);
 
   // render() {
   //   return (
@@ -44,42 +46,69 @@ class Login extends Component {
   //   </MDBContainer>
   // </div>
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      keycloak: null,
-      authenticated: false,
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     keycloak: null,
+  //     authenticated: false,
+  //   };
+  // }
 
   //keycloack intialisation
-  componentDidMount() {
-    const keycloak = Keycloak("./keycloak.json");
-    keycloak.init({ onLoad: "login-required" }).then((authenticated) => {
-      this.setState({ keycloak: keycloak, authenticated: authenticated });
-    });
-  }
+  // componentDidMount() {
+  //   const loginContext = useContext(LoginContext);
+  //   console.log("loginContext", loginContext);
+  //   if (loginContext) {
+  //     this.props.history.push({
+  //       pathname: "/",
+  //     });
+  //   } else {
+  //     const keycloak = Keycloak("./keycloak.json");
+  //     keycloak.init({ onLoad: "login-required" }).then((authenticated) => {
+  //       localStorage.setItem("authenticated", authenticated);
+  //       loginContext = authenticated;
+  //       this.setState({ keycloak: keycloak, authenticated: authenticated });
+  //       this.props.history.push({
+  //         pathname: "/",
+  //       });
+  //     });
+  //   }
+  // }
 
-  const = function logout() {
-    Keycloak.logout(
-      "http://localhost:8180/auth/realms/Hulm/protocol/openid-connect/logout?redirect_uri=encodedRedirectUri"
-    );
-  };
-
-  render() {
-    // console.log(logout);
-    if (this.state.keycloak) {
-      if (this.state.authenticated)
-        return (
-          <LoginContext.Provider value={this.state}>
-            {" "}
-            <Home />
-          </LoginContext.Provider>
-        );
-      else return <div>Unable to authenticate!</div>;
+  useEffect(() => {
+    console.log("loginContext", loginContext);
+    if (loginContext.authenticated) {
+      props.history.push({
+        pathname: "/",
+      });
+    } else {
+      props.login();
     }
-    return <div>Initializing Keycloak...</div>;
-  }
-}
+  }, []);
+
+  // const = function logout() {
+  //   Keycloak.logout(
+  //     "http://localhost:8180/auth/realms/Hulm/protocol/openid-connect/logout?redirect_uri=encodedRedirectUri"
+  //   );
+  // };
+
+  // render() {
+  // console.log(logout);
+  // if (this.state.keycloak) {
+  //   if (this.state.authenticated)
+  //     return (
+  //     );
+  //   else return <div>Unable to authenticate!</div>;
+  // }
+  return (
+    <LoginContext.Consumer>
+      {
+        ({ authenticated }) => <Home />
+        // <div>Initializing Keycloak...</div>
+      }
+    </LoginContext.Consumer>
+  );
+  // }
+};
 
 export default Login;

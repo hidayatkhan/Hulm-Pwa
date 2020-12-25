@@ -11,6 +11,7 @@
 import "../App.css";
 import { Link } from "react-router-dom";
 import { CartIcon } from "./icons/index";
+import Keycloak from "keycloak-js";
 
 // class Nav extends React.Component {
 //   constructor(props) {
@@ -85,6 +86,7 @@ import { CartIcon } from "./icons/index";
 // }
 
 // export default Nav;
+import { useKeycloak } from "@react-keycloak/web";
 
 import React, { useContext, useState } from "react";
 import {
@@ -101,10 +103,11 @@ import {
 } from "mdbreact";
 import { BrowserRouter as Router } from "react-router-dom";
 import { CartContext } from "./contexts/CartContext";
-import { LoginContext } from "./Login";
+import LoginContext from "./contexts/LoginContext";
 
 const Nav = () => {
   const { itemCount } = useContext(CartContext);
+  // const [keycloak, initialized] = useKeycloak();
 
   // static contextType = CartContext;
   // constructor(props) {
@@ -118,6 +121,13 @@ const Nav = () => {
   const [isCollapse, setCollapse] = useState(false);
   const [isWideEnough, setWideEnough] = useState(false);
 
+  const logout = () => {
+    // Keycloak.logout(
+    //   "http://localhost:8180/auth/realms/Hulm/protocol/openid-connect/logout?redirect_uri=encodedRedirectUri"
+    // );
+    localStorage.removeItem("authenticated");
+  };
+
   // onClick() {
   //   this.setState({
   //     collapse: !this.state.collapse,
@@ -126,75 +136,87 @@ const Nav = () => {
 
   // render() {
   return (
-    // <LoginContext.Consumer>
-    //   {(value) => {
-    //     console.log("Nav context", value);
-    // return (
-    <div>
-      <header
-        className="header"
-        style={{
-          minHeight: "82px",
-          fontSize: "1.2rem",
-        }}
-      >
-        <MDBNavbar color="black" dark fixed="top" expand="lg" scrolling>
-          <MDBNavbarBrand>
-            <a href="" className="logo">
-              <span className="grey-color"> &lt;</span>
-              <span className="logo-name">Hulm</span>
-              <span className="grey-color">/&gt;</span>
-            </a>
-          </MDBNavbarBrand>
-          {!isWideEnough && (
-            <MDBNavbarToggler onClick={() => setCollapse(!isCollapse)} />
-          )}
-          <MDBCollapse isOpen={isCollapse} navbar>
-            <MDBNavbarNav right>
-              <MDBNavItem active>
-                <MDBNavLink to="/">Home</MDBNavLink>
-              </MDBNavItem>
+    <LoginContext.Consumer>
+      {(value) => {
+        console.log("Nav context", value);
 
-              <MDBNavItem>
-                <MDBNavLink to="/products">Products</MDBNavLink>
-              </MDBNavItem>
-              <MDBNavItem>
-                <MDBNavLink to="/services">Services</MDBNavLink>
-              </MDBNavItem>
-              <MDBNavItem>
-                <MDBNavLink to="/contact">Contact Us</MDBNavLink>
-              </MDBNavItem>
-              <MDBNavItem>
-                <MDBNavLink to="/Faqs">FAQs</MDBNavLink>
-              </MDBNavItem>
-              <MDBNavItem>
-                <MDBNavLink to="/about">About Us</MDBNavLink>
-              </MDBNavItem>
-              <MDBNavItem>
-                <MDBNavLink to="/Signup">Sign Up</MDBNavLink>
-              </MDBNavItem>
-
-              <MDBNavItem>
-                <MDBNavLink to="/Login">Login</MDBNavLink>
-              </MDBNavItem>
-
-              <MDBNavItem>
-                <MDBNavLink to="/cart">
-                  {" "}
-                  <CartIcon /> Cart ({itemCount})
-                </MDBNavLink>
-              </MDBNavItem>
-              <MDBNavItem>
-                <MDBNavLink to="/">Dashborad</MDBNavLink>
-              </MDBNavItem>
-            </MDBNavbarNav>
-          </MDBCollapse>
-        </MDBNavbar>
-      </header>
-    </div>
-    // );
-    //   }}
-    // </LoginContext.Consumer>
+        return (
+          <div>
+            <header
+              className="header"
+              style={{
+                minHeight: "82px",
+                fontSize: "1.2rem",
+              }}
+            >
+              <MDBNavbar color="black" dark fixed="top" expand="lg" scrolling>
+                <MDBNavbarBrand>
+                  <a href="" className="logo">
+                    <span className="grey-color"> &lt;</span>
+                    <span className="logo-name">Hulm</span>
+                    <span className="grey-color">/&gt;</span>
+                  </a>
+                </MDBNavbarBrand>
+                {!isWideEnough && (
+                  <MDBNavbarToggler onClick={() => setCollapse(!isCollapse)} />
+                )}
+                <MDBCollapse isOpen={isCollapse} navbar>
+                  <MDBNavbarNav right>
+                    <MDBNavItem active>
+                      <MDBNavLink to="/">Home</MDBNavLink>
+                    </MDBNavItem>
+                    <MDBNavItem>
+                      <MDBNavLink to="/products">Products</MDBNavLink>
+                    </MDBNavItem>
+                    <MDBNavItem>
+                      <MDBNavLink to="/services">Services</MDBNavLink>
+                    </MDBNavItem>
+                    <MDBNavItem>
+                      <MDBNavLink to="/contact">Contact Us</MDBNavLink>
+                    </MDBNavItem>
+                    <MDBNavItem>
+                      <MDBNavLink to="/Faqs">FAQs</MDBNavLink>
+                    </MDBNavItem>
+                    <MDBNavItem>
+                      <MDBNavLink to="/about">About Us</MDBNavLink>
+                    </MDBNavItem>
+                    {!value.authenticated && (
+                      <>
+                        {" "}
+                        <MDBNavItem>
+                          <MDBNavLink to="/Signup">Sign Up</MDBNavLink>
+                        </MDBNavItem>
+                        <MDBNavItem>
+                          <MDBNavLink to="/Login">Login</MDBNavLink>
+                        </MDBNavItem>
+                      </>
+                    )}
+                    {value.authenticated && (
+                      <>
+                        {" "}
+                        <MDBNavItem>
+                          <MDBNavLink to="/" onClick={logout}>
+                            Logout
+                          </MDBNavLink>
+                        </MDBNavItem>
+                        <MDBNavItem>
+                          <MDBNavLink to="/cart">
+                            <CartIcon /> Cart ({itemCount})
+                          </MDBNavLink>
+                        </MDBNavItem>
+                        <MDBNavItem>
+                          <MDBNavLink to="/">Dashborad</MDBNavLink>
+                        </MDBNavItem>
+                      </>
+                    )}
+                  </MDBNavbarNav>
+                </MDBCollapse>
+              </MDBNavbar>
+            </header>
+          </div>
+        );
+      }}
+    </LoginContext.Consumer>
   );
 };
 // }

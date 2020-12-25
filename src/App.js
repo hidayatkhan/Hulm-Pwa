@@ -13,19 +13,50 @@ import ProductTab from "./components/ProductTab";
 import Cart from "./components/pages/cart";
 // import NotFound from "./components/pages/NotFound"
 // import Admin from "./components/Dashboard/layouts/Admin"
+import LoginContext from './components/contexts/LoginContext';
+import Keycloak from "keycloak-js";
+import { useHistory } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
+
+
+
+
+
 class App extends Component {
+ constructor(props) {
+    super(props);
+    this.state = {
+      authenticated: false,
+    };
+  }
+
+  login() {
+      const keycloak = Keycloak("./keycloak.json");
+      console.log("this",this)
+      keycloak.init({ onLoad: "login-required" }).then((authenticated) => {
+        this.setState({ authenticated})
+      // //  this.props.history.push({
+      // //     pathname: "/",
+      //   });
+      });
+  }
+
   render(){
   return (
     <>
-{/* <MyContext.Provider value={this.props.data}> */}
-  {console.log('hOME PROPS',this.props.data)}
       <Router>
+        <LoginContext.Provider value={this.state}>
               <Nav />
               <Switch>
                    <Route path="/cart" component={Cart}></Route>
-                {/* <Route path="*" component={NotFound} /> */}
+                    {/* <Route path="*" component={NotFound} /> */}
                     <Route exact path="/" component={Home} ></Route>
-                    <Route path="/Login" component={Login}></Route>
+                    <Route path="/Login"
+                    render={(props) => (
+                    <Login {...props} login={() => this.login()} />)}>
+                       {/* component={(props) => <Login  props={props} login={this.login.bind(this)}/>} */}
+
+                     </Route>
                     <Route path="/SignUp" component={SignUp}></Route>
                     <Route path="/Products" component={ProductTab}></Route>
                     <Route path="/services" component={Services}></Route>
@@ -35,8 +66,8 @@ class App extends Component {
                 {/* <Route path="/admin" component={Admin}></Route>
                     <Redirect from="/admin" to="/admin/dashboard" /> */}
               </Switch>
+              </LoginContext.Provider>
       </Router>
-{/* </MyContext.Provider> */}
     </>
   );
   }

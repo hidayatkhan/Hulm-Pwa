@@ -11,6 +11,7 @@ import ProductsContextProvider from './components/contexts/ProductsContext';
 import CartContextProvider from './components/contexts/CartContext';
 import * as serviceWorker from './serviceWorker';
 import { LoginContext } from './components/Login';
+import {Router} from "react-router-dom";
 // //Get the keycloak configuration
 // let keycloak = Keycloak('./keycloak.json');
 // //Initialization of the keycloak instance
@@ -22,10 +23,12 @@ import { LoginContext } from './components/Login';
 // }
 ReactDOM.render(
   <React.Fragment>
+
     {/* <LoginContext.Provider> */}
+    
       <ProductsContextProvider>
         <CartContextProvider>
-            <App/>
+           <App/>
           
         </CartContextProvider>
       </ProductsContextProvider>

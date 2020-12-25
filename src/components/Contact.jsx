@@ -10,6 +10,7 @@ class Contact extends Component {
           style={{
             color: "black",
             justifyContent: "center",
+            width: "auto",
           }}
         >
           <MDBNavbarBrand
@@ -20,7 +21,7 @@ class Contact extends Component {
           </MDBNavbarBrand>
         </MDBNavbar>
 
-        <div className="row" style={{ paddingTop: "40px" }}>
+        <div className="row" style={{ paddingTop: "40px", width: "100rem" }}>
           <div
             className="col-md-9 mb-md-10 mb-19"
             style={{ paddingLeft: "40px" }}

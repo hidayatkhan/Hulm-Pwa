@@ -24,7 +24,7 @@ class ProductTab extends Component {
   };
 
   render() {
-    console.log("producta Tab props", this.props.data);
+    // console.log("producta Tab props", this.props.data);
     return (
       <>
         <MDBNavbar
@@ -207,7 +207,7 @@ class ProductTab extends Component {
           </MDBTabContent>
         </MDBContainer> */}
 
-        <MDBContainer>
+        <MDBContainer style={{ Minwidth: "90rem" }}>
           <MDBNav className="nav-tabs  ">
             <MDBNavItem>
               <MDBNavLink

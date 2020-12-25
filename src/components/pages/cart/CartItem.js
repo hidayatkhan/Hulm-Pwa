@@ -5,7 +5,7 @@ import { CartContext } from '../../contexts/CartContext';
 import { formatNumber } from '../../helpers/utils';
 
 const CartItem = ({product}) => {
-
+console.log(" cart item products",product)
     const { increase, decrease, removeProduct } = useContext(CartContext);
 
     return ( 
@@ -14,7 +14,7 @@ const CartItem = ({product}) => {
                 <img
                 alt={product.name}
                 style={{margin: "0 auto", maxHeight: "50px"}} 
-                src={product.photo} className="img-fluid d-block"/>
+                className="img-fluid d-block"/>
             </div>
             <div className="col-sm-4 p-2">
                 <h5 className="mb-1">{product.name}</h5>

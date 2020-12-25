@@ -13,6 +13,8 @@ export const sumItems = cartItems => {
 export const CartReducer = (state, action) => {
     switch (action.type) {
         case "ADD_ITEM":
+            console.log("statetttt" ,state.cartItems);
+            console.log("action payload",action.payload);
             if (!state.cartItems.find(item => item.id === action.payload.id)) {
                 state.cartItems.push({
                     ...action.payload,

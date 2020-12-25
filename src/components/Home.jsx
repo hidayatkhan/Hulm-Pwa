@@ -12,7 +12,7 @@ import ProductsGrid from "./pages/store/ProductsGrid";
 
 class Home extends Component {
   render() {
-    console.log("Home props", this.props);
+    // console.log("Home props", this.props);
     return (
       // <LoginContext.Consumer>
       //   {(data) =>{ console.log("home context", data)}

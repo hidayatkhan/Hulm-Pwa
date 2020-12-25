@@ -7,7 +7,7 @@ import CartItem from './CartItem';
 const CartProducts = () => {
 
     const { cartItems } = useContext(CartContext);
-
+console.log("cart item ",cartItems)
     return ( 
         <div >
             <div className="card card-body border-0">

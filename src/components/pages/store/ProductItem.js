@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { CartContext } from '../../contexts/CartContext';
 import { formatNumber } from '../../helpers/utils';
 
+
 const ProductItem = ({product}) => {
 
     const { addProduct, cartItems, increase } = useContext(CartContext);

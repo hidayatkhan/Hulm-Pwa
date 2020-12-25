@@ -11,7 +11,7 @@ class Banner extends Component {
   render() {
     return (
       <MDBCarousel
-        style={{}}
+        style={{ widh: "auto" }}
         activeItem={1}
         length={4}
         showControls={true}
